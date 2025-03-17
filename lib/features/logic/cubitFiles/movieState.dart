@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../Api/model.dart';
+import '../../data/models/model.dart';
 
 abstract class MovieState extends Equatable {
   const MovieState();

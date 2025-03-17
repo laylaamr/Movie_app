@@ -1,14 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:untitled122222/Ui/favouriteScreen.dart';
-import 'package:untitled122222/Ui/HomeScreen.dart';
-import 'package:untitled122222/Ui/profileScreen.dart';
-import 'package:untitled122222/cubitFiles/cubitMovie.dart';
 
-import 'Api/ApiService.dart';
-import 'cubitFiles/cubitRepo.dart';
-import 'cubitFiles/favoriteCubit.dart';
+import 'core/networking/Api/ApiService.dart';
+import 'features/Ui/screens/HomeScreen.dart';
+import 'features/Ui/screens/favouriteScreen.dart';
+import 'features/Ui/screens/profileScreen.dart';
+import 'features/Ui/widgets/botton_navigation_bar.dart';
+import 'features/logic/cubitFiles/cubitMovie.dart';
+import 'features/logic/cubitFiles/cubitRepo.dart';
+import 'features/logic/cubitFiles/favoriteCubit.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   final apiService = ApiService(Dio());
@@ -24,28 +27,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => CubitMovie(movieRepository: movieRepository)..fetchMovies(),
-        ),
-        BlocProvider(create: (_) => FavoriteCubit()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: BottomNavigationExample(),
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      builder: (context, child) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) =>
+                  CubitMovie(movieRepository: movieRepository)..fetchMovies(),
+            ),
+            BlocProvider(create: (_) => FavoriteCubit()),
+          ],
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: HomePage(),
+          ),
+        );
+      },
     );
   }
 }
 
-class BottomNavigationExample extends StatefulWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
-  _BottomNavigationExampleState createState() =>
-      _BottomNavigationExampleState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _BottomNavigationExampleState extends State<BottomNavigationExample> {
+class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
@@ -64,23 +75,9 @@ class _BottomNavigationExampleState extends State<BottomNavigationExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorite',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
+      bottomNavigationBar: CustomBottomNav(
+        selectedIndex: _selectedIndex,
+        onItemSelected: _onItemTapped,
       ),
     );
   }

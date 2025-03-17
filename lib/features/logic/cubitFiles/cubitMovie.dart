@@ -1,13 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:untitled122222/Api/ApiService.dart';
-import 'package:untitled122222/cubitFiles/movieState.dart';
 
-import '../Api/model.dart';
-
-
+import '../../data/models/model.dart';
 import 'cubitRepo.dart';
-
+import 'movieState.dart';
 
 class CubitMovie extends Cubit<MovieState> {
   final MovieRepository movieRepository;
@@ -16,15 +12,23 @@ class CubitMovie extends Cubit<MovieState> {
 
   Future<void> fetchMovies() async {
     try {
-      final List<Movie> movies = await movieRepository.getMovies(); // جلب الأفلام من الـ repository
-      emit(MovieLoaded(movies)); // إصدار حالة loaded مع الأفلام
+      final List<Movie> movies = await movieRepository.getMovies();
+      emit(MovieLoaded(movies));
     } catch (error) {
-      emit(MovieError(error.toString())); // إصدار حالة error في حالة حدوث مشكلة
+      emit(MovieError(error.toString()));
+    }
+  }
+
+  Future<void> fetchMoviesByGenre(String genre) async {
+    emit(MovieLoading());
+    try {
+      final List<Movie> movies = await movieRepository.getMoviesByGenre(genre);
+      emit(MovieLoaded(movies));
+    } catch (error) {
+      emit(MovieError(error.toString()));
     }
   }
 }
-
-
 
 // class CubitMovie extends Cubit<MovieState> {
 //   final ApiService apiService;

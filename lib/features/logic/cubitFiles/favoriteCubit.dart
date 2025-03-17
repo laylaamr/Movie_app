@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:untitled122222/cubitFiles/favotite%20state.dart';
-import 'package:untitled122222/database/favorite.dart';
 
-import '../Api/model.dart';
+import '../../../core/helpers/database/favorite.dart';
+import '../../data/models/model.dart';
+import 'favotite state.dart';
 
 class FavoriteCubit extends Cubit<FavoriteState> {
-  final DatabaseHelper dbHelper = DatabaseHelper.instance; // instance from DatabaseHelper
+  final DatabaseHelper dbHelper =
+      DatabaseHelper.instance; // instance from DatabaseHelper
 
   FavoriteCubit() : super(FavoriteInitial());
 
@@ -22,7 +23,8 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   // Prevent duplication by using the movie's `rank` instead of `id`
   Future<void> toggleFavorite(Movie movie) async {
     try {
-      final isFav = await dbHelper.isFavorite(movie.rank); // Check based on `rank`
+      final isFav =
+          await dbHelper.isFavorite(movie.rank); // Check based on `rank`
 
       if (isFav) {
         await dbHelper.deleteMovie(movie.rank); // Delete using `rank`

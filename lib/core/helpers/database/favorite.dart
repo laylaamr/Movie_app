@@ -1,14 +1,14 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../Api/model.dart';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../Api/model.dart';
+
+import '../../../features/data/models/model.dart';
 
 class DatabaseHelper {
   static const _dbName = 'favorites.db';
-  static const _dbVersion = 2;  // Incremented version number
+  static const _dbVersion = 2; // Incremented version number
   static const _tableName = 'favorites';
 
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -72,7 +72,8 @@ class DatabaseHelper {
 
   Future<bool> isFavorite(int rank) async {
     Database db = await database;
-    var result = await db.query(_tableName, where: 'rank = ?', whereArgs: [rank]);
+    var result =
+        await db.query(_tableName, where: 'rank = ?', whereArgs: [rank]);
     return result.isNotEmpty;
   }
 
@@ -91,6 +92,6 @@ class DatabaseHelper {
   Future<void> deleteDatabaseFile() async {
     var dbPath = await getDatabasesPath();
     String path = join(dbPath, _dbName);
-    await deleteDatabase(path);  // Delete the database
+    await deleteDatabase(path); // Delete the database
   }
 }

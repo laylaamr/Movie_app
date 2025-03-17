@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:untitled122222/widgets/movieCard.dart';
 
-import '../Api/model.dart';
-import '../cubitFiles/favoriteCubit.dart';
-import '../cubitFiles/favotite state.dart';
+import '../../logic/cubitFiles/favoriteCubit.dart';
+import '../../logic/cubitFiles/favotite state.dart';
+import '../widgets/movieCard.dart';
+
 class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -31,4 +31,3 @@ class FavoriteScreen extends StatelessWidget {
     );
   }
 }
-
